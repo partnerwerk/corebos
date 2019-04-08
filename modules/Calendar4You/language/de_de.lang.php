@@ -9,9 +9,9 @@
 
 $mod_strings = array (
 'MyExtension' => 'My Extension',
-"Calendar4You"=>"Kalender",
-"LBL_MODULE_NAME"=>"Kalender",
-"LBL_CALENDAR4YOU"=>"Kalender",
+"Calendar4You"=>"Terminkalender",
+"LBL_MODULE_NAME"=>"Terminkalender",
+"LBL_CALENDAR4YOU"=>"Terminkalender",
 "LBL_ADD_EVENT"=>"Neuer Termin",
 "LBL_ADDTODO"=>"Neue Aufgabe",
 "LBL_SHOW_WEEKENDS"=>"Zeige Wochenenden",
@@ -27,7 +27,7 @@ $mod_strings = array (
 "LBL_SELECTED_INFO"=>"Ausgewählte Informationen",
 "LBL_PROFILES_DESC"=>"Benutzerspezifische Kalenderzugriff für verschiedene Rollen verwalten.",
 "LBL_PROFILES"=>"Profile",
-"LBL_SETPRIVILEGIES"=>"Kalenderrechte für alle profile definieren.",
+"LBL_SETPRIVILEGIES"=>"Kalenderrechte für alle Profile definieren.",
 "LBL_CREATE_EDIT"=>"Neu/Bearbeiten",
 "LBL_VIEW"=>"Ansicht",
 "LBL_DELETE"=>"Löschen",

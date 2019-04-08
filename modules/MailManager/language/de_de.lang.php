@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array (
-	'MailManager' => 'E-Mail Manager',
+	'MailManager' => 'E-Mail-Postfach',
 
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Bitte warten, Daten werden geladen',
