@@ -550,7 +550,7 @@ class Contacts extends CRMEntity {
 	 * @returns list of campaigns in array format
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $log, $singlepane_view, $currentModule;
 		$log->debug('> get_campaigns '.$id);
 		$this_module = $currentModule;
 
@@ -942,7 +942,6 @@ class Contacts extends CRMEntity {
 	 *                 all values introduced by the user will be preloaded
 	 */
 	public function preSaveCheck($request) {
-		global $adb;
 		$saveerror = false;
 		$errmsg = '';
 		if ($_REQUEST['action'] != 'ContactsAjax' && !empty($_FILES)) {
@@ -975,7 +974,7 @@ class Contacts extends CRMEntity {
 	 * @param Integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
-		global $adb,$log;
+		global $adb, $log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
@@ -1205,23 +1204,26 @@ class Contacts extends CRMEntity {
 		$portalURL = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'
 			.getTranslatedString('Please Login Here', $moduleName).'</a>';
 
-		$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
-		$result = $adb->pquery($query, array('Customer Login Details'));
-		$body=$adb->query_result($result, 0, 'body');
-		$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
-		$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
-		$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
-		$contents = str_replace('$password$', $password, $contents);
-		$contents = str_replace('$URL$', $portalURL, $contents);
-		$contents = str_replace('$support_team$', getTranslatedString('Support Team', $moduleName), $contents);
-		$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
-		$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
+		$result = $adb->pquery('SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?', array('Customer Login Details'));
+		if ($result && $adb->num_rows($result)>0) {
+			$body=$adb->query_result($result, 0, 'body');
+			$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
+			$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
+			$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
+			$contents = str_replace('$password$', $password, $contents);
+			$contents = str_replace('$URL$', $portalURL, $contents);
+			$contents = str_replace('$support_team$', getTranslatedString('Support Team', $moduleName), $contents);
+			$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
+			$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
 
-		if ($type == 'LoginDetails') {
-			$temp=$contents;
-			$value['subject']=$adb->query_result($result, 0, 'subject');
-			$value['body']=$temp;
-			return $value;
+			if ($type == 'LoginDetails') {
+				$temp=$contents;
+				$value['subject']=$adb->query_result($result, 0, 'subject');
+				$value['body']=$temp;
+				return $value;
+			}
+		} else {
+			$contents = '';
 		}
 		return $contents;
 	}
